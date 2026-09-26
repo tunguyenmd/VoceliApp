@@ -1,26 +1,310 @@
 @import "tailwindcss";
 
+/* Heard design tokens. Warm, calm, dignified; large type and generous targets for older adults. */
+@theme {
+  --color-paper: #fbf8f3;
+  --color-sand: #f3ece2;
+  --color-sand-deep: #e8dccb;
+  --color-ink: #25283a;
+  --color-ink-soft: #4b4f66;
+  --color-ink-mute: #6c6f82;
+  --color-dusk: #3d405b;
+  --color-dusk-deep: #2c2e44;
+  --color-clay: #c8643f;
+  --color-clay-soft: #f6dfd3;
+  --color-sage: #4f7d68;
+  --color-sage-soft: #dcebe2;
+  --color-gold: #d9a441;
+  --color-gold-soft: #f7ebd0;
+  --color-plum: #6b5a8e;
+  --color-plum-soft: #ebe5f4;
+  --color-line: #e4dace;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-serif, Georgia, serif;
+
+  --radius-card: 1.75rem;
+  --shadow-soft: 0 1px 2px rgb(37 40 58 / 0.04), 0 8px 24px -12px rgb(37 40 58 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(37 40 58 / 0.05), 0 18px 40px -18px rgb(37 40 58 / 0.35);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 18px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-gold-soft);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/* Component classes live in the components layer so Tailwind utilities (min-h-0, py-2, w-auto…) can override them. */
+@layer components {
+  .card {
+    background: white;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.7rem 1.35rem;
+    border-radius: 999px;
+    font-weight: 700;
+    transition:
+      transform 0.15s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      opacity 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-dusk);
+    color: white;
+    box-shadow: var(--shadow-soft);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-dusk-deep);
+  }
+  .btn-quiet {
+    background: transparent;
+    color: var(--color-ink-soft);
+  }
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--color-sand);
+  }
+  .btn-outline {
+    background: white;
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-line);
+  }
+  .btn-outline:hover:not(:disabled) {
+    border-color: var(--color-ink-mute);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-line);
+    background: white;
+    font-weight: 600;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--color-dusk);
+    border-color: var(--color-dusk);
+    color: white;
+  }
+  .chip-suggested {
+    border-style: dashed;
+    border-color: var(--color-gold);
+    background: var(--color-gold-soft);
+  }
+
+  .field {
+    width: 100%;
+    border: 1.5px solid var(--color-line);
+    background: white;
+    border-radius: 1.1rem;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .field:focus {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 1px;
+    border-color: var(--color-gold);
+  }
+
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-mute);
+  }
+
+  select.field {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 2.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234b4f66' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+  }
+}
+
+/* A soft, slow "breathing" glow used behind the record button and on the landing hero. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.25;
+  }
+}
+.breathe {
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--color-sand) 25%, var(--color-sand-deep) 50%, var(--color-sand) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .card {
+    box-shadow: none;
+    border-color: #ccc;
+  }
+}
+
+/* Linh's still portrait before the call starts: a slow, barely-there "breathing" so she feels present. */
+@keyframes linh-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+.linh-breathe {
+  animation: linh-breathe 7s ease-in-out infinite;
+  transform-origin: 50% 35%;
+}
+
+/* The see-through Play button over the assistant on the first screen, with a slow ring that invites the tap. */
+@layer components {
+  .play-glass {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 34px rgba(20, 20, 35, 0.28);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .play-glass:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  .play-glass:active {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  .play-glass::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    animation: play-ring 2.6s ease-out infinite;
+    pointer-events: none;
+  }
+}
+@keyframes play-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+/* An answer she marked from what the person said: a soft pop so the eye catches it. */
+@keyframes marked-pop {
+  0% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 rgba(107, 90, 142, 0.45);
+  }
+  45% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 8px rgba(107, 90, 142, 0.12);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(107, 90, 142, 0);
+  }
+}
+.marked-pop {
+  animation: marked-pop 0.7s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .play-glass::after,
+  .marked-pop,
+  .linh-breathe {
+    animation: none;
+  }
 }

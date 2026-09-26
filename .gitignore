@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local encrypted data store
+/.data/
+!.env.example
+
+# python (voice agent)
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Tavus stock-avatar stills (real people licensed to Tavus): kept local, not published
+/public/linh.jpg
+/public/linh-portrait.jpg
+/public/voceli-rose.jpg
